@@ -16,7 +16,42 @@
         <button id = "save">저장</button>
         <p id="check"></p>
         <script>
-            
+            const saveButton = document.getElementById("save");
+            const contentInput = document.getElementById("content");
+            const checkParagraph = document.getElementById("check");
+
+            saveButton.addEventListener("click", async () => {
+                const content = contentInput.value;
+
+                console.log("content: ", content);
+                if (!content) {
+                    checkParagraph.textContent = "메모 내용을 입력해주세요.";
+                }
+                else {
+                    try {
+                        const response = await fetch("/memos" , {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ content : content })
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            checkParagraph.textContent = `${data.id}번 메모가 저장되었습니다.`;
+                            contentInput.value = "";
+                        }
+                        else {
+                            checkParagraph.textContent = `메모 저장에 실패했습니다.${response.status}`;
+                        }
+                    }catch (error) {
+                        console.log("Error: ", error);
+                        checkParagraph.textContent = "메모 저장 중 오류가 발생했습니다.";
+                    }
+                }
+            });
+
         </script>
     </body>
 
