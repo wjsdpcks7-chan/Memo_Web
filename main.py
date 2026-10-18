@@ -14,7 +14,7 @@ async def root():
     return FileResponse("index.html")
 
 @app.get("/list")
-async def list():
+async def memoList():
     return FileResponse("list.html")
 
 @app.post("/memos", status_code=201)
@@ -34,7 +34,7 @@ async def get_content(id: int):
     return { "id" : id, "content" : content}
 
 @app.get("/memos")
-async def get_list():
+async def get_List():
 
     files = []
     for f in folder.glob("*.txt"):
