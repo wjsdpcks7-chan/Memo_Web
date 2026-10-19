@@ -4,15 +4,16 @@
 **목적**: FastAPI 및 HTML 숙지를 위한 과제
 
 ## 서버 실행 방법
-1. 저장소 받기(git clone..)
+1. **저장소 받기**: `https://github.com/wjsdpcks7-chan/Memo_Web.git`
 
-2. 가상환경 생성 및 활성화(venv)
+2. **가상환경 생성 및 활성화**: `python3 -m venv venv`
+| `source venv/bin/activate`
 
-3. 패키지 설치(requirements.txt로 한번에)
+3. **패키지 설치**: `pip install -r requirements.txt`
 
-4. 서버 실행: `uvicorn main:app --reload`
+4. **서버 실행**: `uvicorn main:app --reload`
 
-5. 브라우저 접속: `http://127.0.0.1:8000`
+5. **브라우저 접속**: `http://127.0.0.1:8000`
 
 ## API 명세
 ### 메모저장
