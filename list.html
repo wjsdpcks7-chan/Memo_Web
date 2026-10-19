@@ -18,23 +18,48 @@
             const memoContent = document.getElementById("MemoContent")
 
             async function loadList() {
-                const response = await fetch("/memos");
-                
-                const data = await response.json()
-
-                for (const memoId of data) {
-                    const item = document.createElement("li")
-                    item.textContent = `${memoId}번 메모`
-                    item.addEventListener("click", async () =>{
-                        loadContent(memoId);
-                    });
-                    memoList.appendChild(item)
+                try{
+                    const response = await fetch("/memos");
+                    
+                    if(response.ok){ 
+                        const data = await response.json()
+                        if(data.length<1){ 
+                            memoContent.textContent = "저장된 메모가 없습니다."
+                        }
+                        else{
+                            for (const memoId of data) {
+                                const item = document.createElement("li")
+                                item.textContent = `${memoId}번 메모`
+                                item.addEventListener("click", () =>{
+                                    loadContent(memoId);
+                                });
+                                memoList.appendChild(item)
+                            }
+                        }
+                    }
+                    else{
+                        memoContent.textContent = "메모 목록을 찾을 수 없습니다."
+                    }
+                }catch(error){
+                    console.log("Error: ", error)
+                    memoContent.textContent = "서버 연결 실패."
                 }
             }
+
             async function loadContent(memoId){
-                const response = await fetch(`/memos/${memoId}`);
-                const data = await response.json()
-                memoContent.textContent = data.content
+                try{
+                    const response = await fetch(`/memos/${memoId}`);
+                    if(response.ok){
+                        const data = await response.json()
+                        memoContent.textContent = data.content
+                    }else{
+                        memoContent.textContent = "메모를 찾을 수 없습니다.${response.status}`"
+                    }
+
+                }catch(error){
+                    console.log("Error: ", error)
+                    memoContent.textContent = "서버 연결 실패."
+                }
             }
             loadList();
 
