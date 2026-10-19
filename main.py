@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 
 app = FastAPI()
 folder = Path("memo")
+folder.mkdir(exist_ok=True)
 
 class Memo(BaseModel):
     content: str
@@ -13,16 +14,20 @@ class Memo(BaseModel):
 async def root():
     return FileResponse("index.html")
 
+
 @app.get("/list")
 async def memoList():
     return FileResponse("list.html")
 
+
 @app.post("/memos", status_code=201)
 async def save(memo: Memo):
     new_id = len(list(folder.glob("*.txt"))) +1
+    
     file_path = folder/f"{new_id}.txt"
     file_path.write_text(memo.content, encoding="utf-8")
     return { "id" : new_id }
+
 
 @app.get("/memos/{id}")
 async def get_content(id: int):
@@ -32,6 +37,7 @@ async def get_content(id: int):
     else:
         content = file_path.read_text(encoding="utf-8")
     return { "id" : id, "content" : content}
+
 
 @app.get("/memos")
 async def get_List():
