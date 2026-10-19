@@ -8,13 +8,27 @@
     </head>
     <body>
         <h1>메모 리스트 페이지</h1><br>
-
-        <p MemoContent></p>
+        <a href = "/">메모 작성</a><br>
+        <p id=MemoContent></p>
         <ul id="MemoList"></ul>
-            
+
 
         <script>
+            async function loadList() {
+                const memoList = document.getElementById("MemoList")
+                const memoContent = document.getElementById("MemoContent")
+                const response = await fetch("/memos");
+                
+                console.log(response.ok)
+                const data = await response.json()
 
+                for (const memoId of data) {
+                    const item = document.createElement("li")
+                    item.textContent = `${memoId}번 메모`
+                    memoList.appendChild(item)
+                }
+            }
+            loadList();
         </script>
     </body>
 </html>
